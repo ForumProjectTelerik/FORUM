@@ -1,0 +1,37 @@
+{
+	"info": {
+		"_postman_id": "04ae0fd0-5362-4a57-b411-e501e9f54fa3",
+		"name": "FORUM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29989770"
+	},
+	"item": [
+		{
+			"name": "View Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:8000/categories"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Category",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Category 4\"}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/categories"
+			},
+			"response": []
+		}
+	]
+}
