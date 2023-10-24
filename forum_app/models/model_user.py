@@ -7,7 +7,7 @@ class User(BaseModel):
     email: str
     nickname: str
     password: str
-    date_of_birth: date
+    date_of_birth: date = None
     gender: str
 
     @classmethod

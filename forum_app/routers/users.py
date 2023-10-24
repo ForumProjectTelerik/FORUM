@@ -8,8 +8,9 @@ users_router = APIRouter(prefix='/user')
 
 
 @users_router.get('/',tags={'All Users'})
-def get_users():
+def get_users(x_token: str = Header()):
 
+    user = get_user_or_raise_401(x_token)
     users = user_service.read_users()
 
     result = []
@@ -28,7 +29,7 @@ def get_users():
 
     return result
 
-@users_router.post('/login', tags=["Signup"])
+@users_router.post('/login', tags=["Login from here"])
 def login(username: str = Query(),password: str = Query()):
     user = user_service.try_login(username, password)
 
@@ -39,7 +40,7 @@ def login(username: str = Query(),password: str = Query()):
         return Response(status_code=404, content='Invalid login data')
 
 
-@users_router.post('/register', tags=["Signup"])
+@users_router.post('/register', tags=["Register from here"])
 def register(email: str  = Query(), 
              username: str = Query(), 
              password: str = Query(), 
@@ -47,10 +48,10 @@ def register(email: str  = Query(),
              gender: str = Query()):
 
     if user_service.check_email_exist(email):
-        return Response(status_code=400, content=f'Email is already taken!')
+        return Response(status_code=400, content=f'This email is already taken!')
 
     if user_service.check_username_exist(username):
-        return Response(status_code=400, content=f'Username is already taken!')
+        return Response(status_code=400, content=f'This nickname is already taken!')
     else:
         user = user_service.create_user(email, username, password,date_of_birth,gender)
         return user
