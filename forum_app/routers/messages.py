@@ -1,4 +1,4 @@
-from data.models import User
+from models.model_user import User
 from services import user_service,message_service
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -7,7 +7,7 @@ from pydantic import BaseModel
 messages_router = APIRouter(prefix='/messages')
 
 
-@messages_router.get('/')
+@messages_router.get('/',tags={'All messages'})
 def get_messeges():
 
     messages = message_service.read_messages()
