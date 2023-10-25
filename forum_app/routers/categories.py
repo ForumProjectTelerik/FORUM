@@ -1,30 +1,30 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query, Body,Header
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from data.models import Category, Topics
+from models.model_category import Category
+from models.model_topic import Topics
 from services import category_service
+from models.model_category import CategoryResponseModel
+from authentication.authenticator import get_user_or_raise_401
 
 categories_router = APIRouter(prefix='/categories')
 
-class CategoryResponseModel(BaseModel):
-    category: Category
-    topics: list[Topics]
+
+@categories_router.get('/',tags={'All categories'})
+def view_categories(x_token: str = Header()):
+    _ = get_user_or_raise_401(x_token)
+    return category_service.all_categories()
 
 
-@categories_router.get('/')
-def view_categories(name: str | None = None):
-    return category_service.all_categories(name)
-
-
-
-@categories_router.post('/', status_code=201)
-def create_category(category: Category):
+@categories_router.post('/',tags={'Create a category from here'}, status_code=201)
+def create_category(category: Category = Body(),x_token: str = Header()):
     if category_service.category_exists(category.name):
+        _ = get_user_or_raise_401(x_token)
         return JSONResponse(status_code=409,
                             content={'detail': f'Category with name "{category.name}" already exists.'})
 
-    return category_service.create_category(category)
-
+    new_category = category_service.create_category(category)
+    return {"Category has been created"}
 
 
 

@@ -1,4 +1,4 @@
-from data.models import Category
+from models.model_category import Category
 from data.database import read_query, insert_query
 
 
@@ -18,9 +18,8 @@ def category_exists(name: str):
 
 
 def create_category(category: Category):
-    generated_id = insert_query(
+    category_name = insert_query(
         '''INSERT INTO category(name_of_category) VALUE(?)''',
         (category.name,))
 
-    category.id = generated_id
-    return category
+    return category_name
