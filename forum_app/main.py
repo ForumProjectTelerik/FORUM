@@ -4,7 +4,7 @@ from routers.messages import messages_router
 from routers.categories import categories_router
 
 
-app = FastAPI()
+app = FastAPI(title='The Sport Forum', description='Team #5 web project on Telerik Academy')
 app.include_router(users_router)
 app.include_router(messages_router)
 app.include_router(categories_router)
