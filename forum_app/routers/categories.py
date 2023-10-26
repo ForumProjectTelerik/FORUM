@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Body,Header
+from fastapi import APIRouter, Query, Body,Header, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from my_models.model_category import Category
@@ -25,6 +25,14 @@ def create_category(category: Category = Body(),x_token: str = Header()):
 
     new_category = category_service.create_category(category)
     return {"Category has been created"}
+
+@categories_router.get('/{category_name_of_category}/topics', tags={'Topics for Category'})
+def get_topics_for_category(category_name: str):
+    if not category_service.category_exists(category_name):
+        raise HTTPException(status_code=404, detail=f'Category with name "{category_name}" not found.')
+    else:
+        topics = category_service.get_topics_by_category_name(category_name)
+        return topics
 
 
 

@@ -23,3 +23,9 @@ def create_category(category: Category):
         (category.name,))
 
     return category_name
+
+def get_topics_by_category_name(name: str):
+    query = 'SELECT * FROM new_topic WHERE category_name_of_category = ?'
+    data = (name,)
+    get_topics = read_query(query, data)
+    return get_topics
