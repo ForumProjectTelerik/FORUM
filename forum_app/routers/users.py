@@ -2,7 +2,7 @@ from fastapi import APIRouter, Header, Response, Query
 from services import user_service
 from authentication.authenticator import get_user_or_raise_401
 from datetime import date
-from models.model_user import UserResult
+from my_models.model_user import UserResult
 
 users_router = APIRouter(prefix='/user')
 

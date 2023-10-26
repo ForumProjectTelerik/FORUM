@@ -1,4 +1,4 @@
-from models.model_category import Category
+from my_models.model_category import Category
 from data.database import read_query, insert_query
 
 

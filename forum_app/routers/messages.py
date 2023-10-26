@@ -1,4 +1,4 @@
-from models.model_user import User
+from my_models.model_user import User
 from services import user_service,message_service
 from fastapi import APIRouter, Header
 from pydantic import BaseModel

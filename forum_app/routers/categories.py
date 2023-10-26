@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Query, Body,Header
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from models.model_category import Category
-from models.model_topic import Topics
+from my_models.model_category import Category
+from my_models.model_topic import Topic
 from services import category_service
-from models.model_category import CategoryResponseModel
+from my_models.model_category import CategoryResponseModel
 from authentication.authenticator import get_user_or_raise_401
 
 categories_router = APIRouter(prefix='/categories')

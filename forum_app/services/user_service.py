@@ -1,5 +1,5 @@
 from data.database import read_query,insert_query
-from models.model_user import User 
+from my_models.model_user import User 
 from datetime import datetime
 
 _SEPARATOR = ';'

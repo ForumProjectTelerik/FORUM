@@ -1,6 +1,6 @@
 from datetime import date
 from pydantic import BaseModel, constr
-from models.model_topic import Topics
+from my_models.model_topic import Topic
 
 class Category(BaseModel):
     name: constr(min_length=5)
@@ -12,4 +12,4 @@ class Category(BaseModel):
     
 class CategoryResponseModel(BaseModel):
     category: Category
-    topics: list[Topics]
+    topics: list[Topic]
