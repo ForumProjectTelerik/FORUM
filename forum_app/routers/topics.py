@@ -9,10 +9,15 @@ topics_router = APIRouter(prefix='/topic')
 
 
 @topics_router.get('/',tags={'All Topics'})
-def get_topics(x_token: str = Header()):
+def get_topics(search: str = Query(None,description='You can search different topics by title'),sort: str = Query(default='Ascending',description='You can choose how to sort the title: ascending or descending'),x_token: str = Header()):
 
-    topic = get_user_or_raise_401(x_token)
-    topics = topic_service.read_topic()
+    user = get_user_or_raise_401(x_token)
+    if sort:
+        topics = topic_service.sort_by_topic(sort)
+    if search:
+        topics = topic_service.search_by_topic(search)
+    else:
+        topics = topic_service.read_topic()
 
     result = []
 

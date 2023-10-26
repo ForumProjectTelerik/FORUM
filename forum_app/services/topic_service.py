@@ -5,8 +5,6 @@ from services.user_service import find_by_username
 from services.category_service import category_exists
 from fastapi import Response
 
-_SEPARATOR = ';'
-
 
 def read_topic():
     data = read_query('SELECT * FROM new_topic')
@@ -23,6 +21,17 @@ def find_by_id_topic(id_of_topic: int) -> Topic | None:
         return new_result[0]
     else:
         return None
+
+def sort_by_topic(sort):
+    if sort == 'Ascending':
+       something = read_query('SELECT * FROM new_topic ORDER BY title ASC')
+    elif sort == 'Descending':
+       something = read_query('SELECT * FROM new_topic ORDER BY title DESC')
+    return something
+
+def search_by_topic(search):
+    search_data = read_query('SELECT * FROM new_topic WHERE title LIKE ?',(f'%{search}%',))
+    return search_data
 
 def topic_exists(by_title: str):
     check = read_query('SELECT title FROM new_topic WHERE title = ?',(by_title,))

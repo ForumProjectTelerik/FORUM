@@ -17,11 +17,11 @@ def view_categories(x_token: str = Header()):
 
 
 @categories_router.post('/',tags={'Create a category from here'}, status_code=201)
-def create_category(category: Category = Body(),x_token: str = Header()):
-    if category_service.category_exists(category.name):
+def create_category(category: str = Query(),x_token: str = Header()):
+    if category_service.category_exists(category):
         _ = get_user_or_raise_401(x_token)
         return JSONResponse(status_code=409,
-                            content={'detail': f'Category with name "{category.name}" already exists.'})
+                            content={'detail': f'Category with name "{category}" already exists.'})
 
     new_category = category_service.create_category(category)
     return {"Category has been created"}

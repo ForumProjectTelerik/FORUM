@@ -17,10 +17,10 @@ def category_exists(name: str):
     return any(query)
 
 
-def create_category(category: Category):
+def create_category(category: str):
     category_name = insert_query(
         '''INSERT INTO category(name_of_category) VALUE(?)''',
-        (category.name,))
+        (category,))
 
     return category_name
 
