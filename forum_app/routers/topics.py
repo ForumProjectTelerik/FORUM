@@ -18,11 +18,12 @@ def get_topics(x_token: str = Header()):
 
     for data in topics:
         data_dict = {
-            "title=title": data[0],
-            "topic_text": data[1],
-            "date_of_creation": data[2],
-            "category_name_of_category": data[3],
-            "id_of_author": data[4]
+            "id_of_topic": data[0],
+            "title": data[1],
+            "topic_text": data[2],
+            "date_of_creation": data[3],
+            "category_name": data[4],
+            "id_of_author": data[5]
         }
          
         result.append(data_dict)
@@ -30,21 +31,17 @@ def get_topics(x_token: str = Header()):
     return result
 
 @topics_router.post('/add_topic', tags=["Add Topic"])
-def add_topic(
-    title: str = Query(),
-    topic_text: str = Query(),
-    date_of_creation: str = Query(),
-    category_name_of_category: str = Query(),
-    id_of_author: int = Query()
-):
- 
-    new_topic = Topic(
-        id=None, 
-        title=title,
-        topic_text=topic_text,
-        date_of_creation=date_of_creation,
-        category_name_of_category=category_name_of_category,
-        id_of_author=id_of_author
-    )
+def add_topic(x_token: str = Header(),
+        title: str = Query(),
+        topic_text: str = Query(),
+        date_of_creation: str = Query(),
+        name_of_category: str = Query(),
+        username: str = Query()
+    ):
+    user = get_user_or_raise_401(x_token)
 
-    return {"message": "Topic added successfully"}
+    if topic_service.topic_exists(title):
+        return Response(status_code=400, content='Topic with this title already exists')
+    else:
+        everything = topic_service.create_topic(title,topic_text,date_of_creation,name_of_category,username)
+        return everything
