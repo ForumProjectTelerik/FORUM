@@ -5,10 +5,10 @@ from my_models.model_topic import TopicResult
 from my_models.model_topic import Topic
 
 
-topics_router = APIRouter(prefix='/topic')
+topics_router = APIRouter(prefix='/topic',tags={'Everything available for topics'})
 
 
-@topics_router.get('/',tags={'All Topics'})
+@topics_router.get('/')
 def get_topics(search: str = Query(None,description='You can search different topics by title'),sort: str = Query(default='Ascending',description='You can choose how to sort the title: ascending or descending'),x_token: str = Header()):
 
     user = get_user_or_raise_401(x_token)
@@ -35,7 +35,7 @@ def get_topics(search: str = Query(None,description='You can search different to
 
     return result
 
-@topics_router.post('/add_topic', tags=["Add Topic"])
+@topics_router.post('/add_topic')
 def add_topic(x_token: str = Header(),
         title: str = Query(),
         topic_text: str = Query(),

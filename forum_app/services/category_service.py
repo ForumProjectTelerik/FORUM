@@ -9,6 +9,16 @@ def all_categories(name = None):
         sql += ' WHERE ' + f'name_of_category = {name}'
     return (Category.from_query_result(*row) for row in read_query(sql))
 
+def sort_by_category(sort):
+    if sort == 'Ascending':
+       something = read_query('SELECT * FROM category ORDER BY name_of_category ASC')
+    elif sort == 'Descending':
+       something = read_query('SELECT * FROM category ORDER BY name_of_category DESC')
+    return something
+
+def search_by_categories(search):
+    search_data = read_query('SELECT * FROM category WHERE name_of_category LIKE ?',(f'%{search}%',))
+    return search_data
 
 
 def category_exists(name: str):

@@ -57,7 +57,7 @@ def register(email: str  = Query(),
         return user
 
 
-@users_router.get('/info', tags=["User"])
+@users_router.get('/info', tags=["Specific user information"])
 def user_info(x_token: str = Header()):
     
     user = get_user_or_raise_401(x_token)
