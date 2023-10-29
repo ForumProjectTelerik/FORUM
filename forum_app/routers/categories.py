@@ -26,13 +26,27 @@ def create_category(category: str = Query(),x_token: str = Header()):
     new_category = category_service.create_category(category)
     return {"Category has been created"}
 
-@categories_router.get('/{category_name_of_category}/topics', tags={'Topics for Category'})
-def get_topics_for_category(category_name: str):
+@categories_router.get('/view_topics', tags={'All topics from one Category',},description= 'You can get all topics from one category')
+def get_topics_for_category(category_name: str,x_token: str = Header()):
+    _ = get_user_or_raise_401(x_token)
     if not category_service.category_exists(category_name):
         raise HTTPException(status_code=404, detail=f'Category with name "{category_name}" not found.')
     else:
         topics = category_service.get_topics_by_category_name(category_name)
-        return topics
+        
+        result = []
+        for correct_format in topics:
+            data_dict = {
+                "Title": correct_format[1],
+                "Text": correct_format[2],
+                "Date_of_Creation": correct_format[3],
+                "Category_Name": correct_format[4],
+                
+            }
+            
+            result.append(data_dict)
+
+        return result
 
 
 
