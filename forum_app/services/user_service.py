@@ -63,6 +63,9 @@ def from_token(token: str) -> User | None:
 
     return find_by_username(nickname)
 
+def get_username_by_token(token: str):
+    _, nickname = token.split(_SEPARATOR)
+    return nickname
 
 def create_user(email: str, nickname: str, password: str, dateOfBirth, gender: str) -> User | None:
 

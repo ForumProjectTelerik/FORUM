@@ -29,7 +29,7 @@ def get_users(x_token: str = Header()):
 
     return result
 
-@users_router.post('/login', tags=["Login from here"])
+@users_router.post('/login', description='You can login from here using your username and password.',tags=["Login from here"])
 def login(username: str = Query(),password: str = Query()):
     user = user_service.try_login(username, password)
 
@@ -40,7 +40,7 @@ def login(username: str = Query(),password: str = Query()):
         return Response(status_code=404, content='Invalid login data')
 
 
-@users_router.post('/register', tags=["Register from here"])
+@users_router.post('/register', description= 'You can register from here using your email.',tags=["Register from here"])
 def register(email: str  = Query(), 
              username: str = Query(), 
              password: str = Query(), 
@@ -57,8 +57,8 @@ def register(email: str  = Query(),
         return user
 
 
-@users_router.get('/info', tags=["Specific user information"])
-def user_info(x_token: str = Header()):
+@users_router.get('/info', tags=["Your specific user information"])
+def my_user_information(x_token: str = Header()):
     
     user = get_user_or_raise_401(x_token)
 

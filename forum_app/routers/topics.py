@@ -5,11 +5,11 @@ from my_models.model_topic import TopicResult
 from my_models.model_topic import Topic
 
 
-topics_router = APIRouter(prefix='/topic',tags={'Everything available for topics'})
+topics_router = APIRouter(prefix='/topic',tags={'Everything available for Topics'})
 
 
-@topics_router.get('/')
-def get_topics(search: str = Query(None,description='You can search different topics by title'),sort: str = Query(default='Ascending',description='You can choose how to sort the title: ascending or descending'),x_token: str = Header()):
+@topics_router.get('/',description='You can search/sort every topic from here.')
+def get_topics(search: str = Query(None),sort: str = Query(default='Ascending',description='You can choose how to sort the title: ascending or descending'),x_token: str = Header()):
 
     user = get_user_or_raise_401(x_token)
     if search:
@@ -35,15 +35,15 @@ def get_topics(search: str = Query(None,description='You can search different to
 
     return result
 
-@topics_router.post('/add_topic')
+@topics_router.post('/add_topic',description='You can create new topic using available categories from here.')
 def add_topic(x_token: str = Header(),
         title: str = Query(),
         topic_text: str = Query(),
         date_of_creation: str = Query(),
         name_of_category: str = Query(),
-        username: str = Query()
     ):
     user = get_user_or_raise_401(x_token)
+    username = user_service.get_username_by_token(x_token)
 
     if topic_service.topic_exists(title):
         return Response(status_code=400, content='Topic with this title already exists')

@@ -10,8 +10,8 @@ from authentication.authenticator import get_user_or_raise_401
 categories_router = APIRouter(prefix='/categories',tags={'Everything available for Categories'})
 
 
-@categories_router.get('/')
-def view_all_categories(search: str = Query(None,description='You can search different categories by their name'),sort: str = Query(default='Ascending',description='You can choose how to sort the categories: ascending or descending'),x_token: str = Header()):
+@categories_router.get('/',description='You can view all created categories')
+def view_all_categories(search: str = Query(None),sort: str = Query(default='Ascending',description='You can choose how to sort the categories: (Ascending or Descending)'),x_token: str = Header()):
 
     _ = get_user_or_raise_401(x_token)
     if search:
@@ -24,7 +24,7 @@ def view_all_categories(search: str = Query(None,description='You can search dif
     return topics
 
 
-@categories_router.post('/',status_code=201)
+@categories_router.post('/',description='You can create a category from here.',status_code=201)
 def create_a_category(category: str = Query(),x_token: str = Header()):
     if category_service.category_exists(category):
         _ = get_user_or_raise_401(x_token)
