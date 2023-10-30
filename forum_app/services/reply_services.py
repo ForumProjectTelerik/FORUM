@@ -5,8 +5,8 @@ from fastapi.responses import JSONResponse
 
 
 def read_replies_by_topic_id(topic_id):
-    data = read_query('''SELECT text, new_user_id_of_user 
-                        FROM replies WHERE  new_topic_id_of_topic = ?''',
+    data = read_query('''SELECT text, new_user_id 
+                        FROM replies WHERE  new_topic_id = ?''',
                       (topic_id,))
     return data
 
@@ -20,7 +20,7 @@ def create_reply(topic_title: str, text: str, username):
     if not topic_service.topic_exists(topic_title):
         return JSONResponse(status_code=404, content='There is no such topic')
 
-    insert_query('''INSERT INTO replies (text, new_topic_id_of_topic, new_user_id_of_user)
+    insert_query('''INSERT INTO replies (text, new_topic_id, new_user_id)
                     VALUES (?, ?, ?)''', (text, topic_id, author_id))
 
     return 'The reply was added successfully'
