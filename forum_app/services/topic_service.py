@@ -56,3 +56,12 @@ def create_topic(title: str, topic_text: str, date_of_creation: date, name_of_ca
                                (title,topic_text,date_of_creation,name_of_category,getting_it,))
     
     return Topic(title=title,topic_text=topic_text,date_of_creation=date_of_creation,name_of_category=check_category,id_of_author=getting_it)
+
+
+
+def find_topic_id_by_name(topic_name: str):
+    result_tuple = read_query('''SELECT id_of_topic FROM new_topic
+                        WHERE title = ?''', (topic_name,))
+    return result_tuple[0][0]
+
+
