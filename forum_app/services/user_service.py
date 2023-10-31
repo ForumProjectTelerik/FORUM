@@ -74,3 +74,15 @@ def create_user(email: str, nickname: str, password: str, dateOfBirth, gender: s
             (email, nickname, password, dateOfBirth, gender))
 
         return User(id=generated_id, email=email,nickname=nickname, password='', date=dateOfBirth, gender=gender)
+
+def find_user_by_token(token: str):
+
+    splitted_token = token.split(';')
+
+    return splitted_token[0]
+
+def find_username_by_token(token: str):
+
+    splitted_token = token.split(';')
+
+    return splitted_token[1]
