@@ -97,7 +97,7 @@ def get_id_by_token(token: str):
     user_id, _ = token.split(_SEPARATOR)
     return int(user_id)
 
-def from_token(token: str) -> User | None:
+def from_token_2(token: str) -> User | None:
     user_id = get_id_by_token(token)
     return find_id_by_token(user_id)
 

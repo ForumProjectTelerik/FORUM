@@ -18,8 +18,14 @@ def view_replies_by_topic_title(topic_title: str, x_token: str = Header()):
 
     result = []
     for data in replies:
-        username = user_service.find_user_by_id(data[1])
-        data_dict = {"reply text": data[0], "reply username": username}
+        username = user_service.find_user_by_id(data[2])
+        reactions = reply_services.get_downup_vote(data[0])
+        data_dict = {
+            "Reply ID": data[0],
+            "Reply Text": data[1], 
+            "Reply Username": username,
+            "Reply Reactions": reactions
+            }
         result.append(data_dict)
     return result
 
