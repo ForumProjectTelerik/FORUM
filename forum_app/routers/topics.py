@@ -3,6 +3,7 @@ from authentication.authenticator import get_user_or_raise_401
 from services import topic_service, user_service
 from my_models.model_topic import TopicResult
 from my_models.model_topic import Topic
+from fastapi.responses import JSONResponse
 
 
 topics_router = APIRouter(prefix='/topic',tags={'Everything available for Topics'})
@@ -46,7 +47,7 @@ def add_topic(x_token: str = Header(),
     username = user_service.get_username_by_token(x_token)
 
     if topic_service.topic_exists(title):
-        return Response(status_code=400, content='Topic with this title already exists')
+        return JSONResponse(status_code=400, content='Topic with this title already exists')
     else:
         everything = topic_service.create_topic(title,topic_text,date_of_creation,name_of_category,username)
         return everything

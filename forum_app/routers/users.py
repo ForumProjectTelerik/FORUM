@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Header, Response, Query
+from fastapi import APIRouter, Header, Query
 from services import user_service
 from authentication.authenticator import get_user_or_raise_401
 from datetime import date
 from my_models.model_user import UserResult
-
+from fastapi.responses import JSONResponse
 users_router = APIRouter(prefix='/user')
 
 
@@ -37,7 +37,7 @@ def login(username: str = Query(),password: str = Query()):
         token = user_service.create_token(user)
         return {'token': token}
     else:
-        return Response(status_code=404, content='Invalid login data')
+        return JSONResponse(status_code=404, content='Invalid login data')
 
 
 @users_router.post('/register', description= 'You can register from here using your email.',tags=["Register from here"])
@@ -48,10 +48,10 @@ def register(email: str  = Query(),
              gender: str = Query()):
 
     if user_service.check_email_exist(email):
-        return Response(status_code=400, content=f'This email is already taken!')
+        return JSONResponse(status_code=400, content=f'This email is already taken!')
 
     if user_service.check_username_exist(username):
-        return Response(status_code=400, content=f'This nickname is already taken!')
+        return JSONResponse(status_code=400, content=f'This nickname is already taken!')
     else:
         user = user_service.create_user(email, username, password,date_of_birth,gender)
         return user

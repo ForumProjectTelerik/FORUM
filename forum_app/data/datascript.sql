@@ -28,17 +28,6 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `new_forum_project`.`conversations`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `new_forum_project`.`conversations` (
-  `id_of_conversations` INT(11) NOT NULL AUTO_INCREMENT,
-  `owner_of_conversation` VARCHAR(40) NOT NULL,
-  PRIMARY KEY (`id_of_conversations`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
 -- Table `new_forum_project`.`new_user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `new_forum_project`.`new_user` (
@@ -50,7 +39,58 @@ CREATE TABLE IF NOT EXISTS `new_forum_project`.`new_user` (
   `gender` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id_of_user`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `new_forum_project`.`conversations`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `new_forum_project`.`conversations` (
+  `id_of_conversations` INT(11) NOT NULL AUTO_INCREMENT,
+  `the_receiver` INT(11) NOT NULL,
+  `the_sender` INT(11) NOT NULL,
+  PRIMARY KEY (`id_of_conversations`),
+  INDEX `fk_conversations_new_user1_idx` (`the_receiver` ASC) VISIBLE,
+  INDEX `fk_conversations_new_user2_idx` (`the_sender` ASC) VISIBLE,
+  CONSTRAINT `fk_conversations_new_user1`
+    FOREIGN KEY (`the_receiver`)
+    REFERENCES `new_forum_project`.`new_user` (`id_of_user`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_conversations_new_user2`
+    FOREIGN KEY (`the_sender`)
+    REFERENCES `new_forum_project`.`new_user` (`id_of_user`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `new_forum_project`.`messages`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `new_forum_project`.`messages` (
+  `id_of_messages` INT(11) NOT NULL AUTO_INCREMENT,
+  `text_message` LONGTEXT NOT NULL,
+  `conversation_id` INT(11) NOT NULL,
+  `the_sender` INT(11) NOT NULL,
+  PRIMARY KEY (`id_of_messages`),
+  INDEX `fk_messages_conversations_between_users1_idx` (`conversation_id` ASC) VISIBLE,
+  INDEX `fk_messages_new_user1_idx` (`the_sender` ASC) VISIBLE,
+  CONSTRAINT `fk_messages_conversations_between_users1`
+    FOREIGN KEY (`conversation_id`)
+    REFERENCES `new_forum_project`.`conversations` (`id_of_conversations`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_messages_new_user1`
+    FOREIGN KEY (`the_sender`)
+    REFERENCES `new_forum_project`.`new_user` (`id_of_user`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 14
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -60,7 +100,7 @@ DEFAULT CHARACTER SET = latin1;
 CREATE TABLE IF NOT EXISTS `new_forum_project`.`new_topic` (
   `id_of_topic` INT(11) NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NOT NULL,
-  `topic_text` VARCHAR(50) NOT NULL,
+  `topic_text` LONGTEXT NOT NULL,
   `date_of_creation` DATETIME NOT NULL,
   `category_name_of_category` VARCHAR(25) NOT NULL,
   `id_of_author` INT(11) NOT NULL,
@@ -78,57 +118,7 @@ CREATE TABLE IF NOT EXISTS `new_forum_project`.`new_topic` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 11
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `new_forum_project`.`reactions_of_post`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `new_forum_project`.`reactions_of_post` (
-  `id_of_likes` INT(11) NOT NULL AUTO_INCREMENT,
-  `new_user_id` INT(11) NOT NULL,
-  `new_topic_id` INT(11) NOT NULL,
-  PRIMARY KEY (`id_of_likes`),
-  INDEX `fk_likes_of_post_new_user1_idx` (`new_user_id` ASC) VISIBLE,
-  INDEX `fk_likes_of_post_new_topic1_idx` (`new_topic_id` ASC) VISIBLE,
-  CONSTRAINT `fk_likes_of_post_new_topic1`
-    FOREIGN KEY (`new_topic_id`)
-    REFERENCES `new_forum_project`.`new_topic` (`id_of_topic`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_likes_of_post_new_user1`
-    FOREIGN KEY (`new_user_id`)
-    REFERENCES `new_forum_project`.`new_user` (`id_of_user`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `new_forum_project`.`messages`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `new_forum_project`.`messages` (
-  `id_of_messages` INT(11) NOT NULL AUTO_INCREMENT,
-  `text_message` TEXT NOT NULL,
-  `conversations_between_users_id_of_conversations` INT(11) NOT NULL,
-  `new_user_id_of_user` INT(11) NOT NULL,
-  PRIMARY KEY (`id_of_messages`),
-  INDEX `fk_messages_conversations_between_users1_idx` (`conversations_between_users_id_of_conversations` ASC) VISIBLE,
-  INDEX `fk_messages_new_user1_idx` (`new_user_id_of_user` ASC) VISIBLE,
-  CONSTRAINT `fk_messages_conversations_between_users1`
-    FOREIGN KEY (`conversations_between_users_id_of_conversations`)
-    REFERENCES `new_forum_project`.`conversations` (`id_of_conversations`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_messages_new_user1`
-    FOREIGN KEY (`new_user_id_of_user`)
-    REFERENCES `new_forum_project`.`new_user` (`id_of_user`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 18
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -137,7 +127,7 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `new_forum_project`.`replies` (
   `id_of_replies` INT(11) NOT NULL AUTO_INCREMENT,
-  `text` TEXT NOT NULL,
+  `text` LONGTEXT NOT NULL,
   `new_topic_id` INT(11) NOT NULL,
   `new_user_id` INT(11) NOT NULL,
   PRIMARY KEY (`id_of_replies`),
@@ -154,26 +144,30 @@ CREATE TABLE IF NOT EXISTS `new_forum_project`.`replies` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `new_forum_project`.`conversations_between_new_users`
+-- Table `new_forum_project`.`reactions_of_replies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `new_forum_project`.`conversations_between_new_users` (
-  `convo_id` INT(11) NOT NULL,
-  `user_id` INT(11) NOT NULL,
-  PRIMARY KEY (`convo_id`, `user_id`),
-  INDEX `fk_conversations_between_users_has_new_user_new_user1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_conversations_between_users_has_new_user_conversations_b_idx` (`convo_id` ASC) VISIBLE,
-  CONSTRAINT `fk_conversations_between_users_has_new_user_conversations_bet1`
-    FOREIGN KEY (`convo_id`)
-    REFERENCES `new_forum_project`.`conversations` (`id_of_conversations`)
+CREATE TABLE IF NOT EXISTS `new_forum_project`.`reactions_of_replies` (
+  `id_of_likes` INT(11) NOT NULL AUTO_INCREMENT,
+  `UpVote` INT(11) NULL DEFAULT NULL,
+  `DownVote` INT(11) NULL DEFAULT NULL,
+  `new_user_id` INT(11) NOT NULL,
+  `id_of_replies` INT(11) NOT NULL,
+  PRIMARY KEY (`id_of_likes`),
+  INDEX `fk_likes_of_post_new_user1_idx` (`new_user_id` ASC) VISIBLE,
+  INDEX `fk_reactions_of_post_replies1_idx` (`id_of_replies` ASC) VISIBLE,
+  CONSTRAINT `fk_likes_of_post_new_user1`
+    FOREIGN KEY (`new_user_id`)
+    REFERENCES `new_forum_project`.`new_user` (`id_of_user`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_conversations_between_users_has_new_user_new_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `new_forum_project`.`new_user` (`id_of_user`)
+  CONSTRAINT `fk_reactions_of_post_replies1`
+    FOREIGN KEY (`id_of_replies`)
+    REFERENCES `new_forum_project`.`replies` (`id_of_replies`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -183,4 +177,3 @@ DEFAULT CHARACTER SET = latin1;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-

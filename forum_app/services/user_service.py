@@ -86,3 +86,9 @@ def find_username_by_token(token: str):
     splitted_token = token.split(';')
 
     return splitted_token[1]
+
+def find_username_by_id(username: str):
+    user = read_query('SELECT id_of_user FROM new_user WHERE nickname = ?', (username,))
+    
+    if user:
+        return user[0][0]

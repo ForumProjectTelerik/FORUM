@@ -38,7 +38,7 @@ def create_a_category(category: str = Query(),x_token: str = Header()):
 def get_all_topics_for_one_category(category_name: str,x_token: str = Header()):
     _ = get_user_or_raise_401(x_token)
     if not category_service.category_exists(category_name):
-        raise HTTPException(status_code=404, detail=f'Category with name "{category_name}" not found.')
+        return JSONResponse(status_code=404, detail=f'Category with name "{category_name}" not found.')
     else:
         topics = category_service.get_topics_by_category_name(category_name)
         
