@@ -92,3 +92,20 @@ def find_username_by_id(username: str):
     
     if user:
         return user[0][0]
+    
+def get_id_by_token(token: str):
+    user_id, _ = token.split(_SEPARATOR)
+    return int(user_id)
+
+def from_token(token: str) -> User | None:
+    user_id = get_id_by_token(token)
+    return find_id_by_token(user_id)
+
+def find_id_by_token(token: str) -> int | None:
+    data = read_query(
+        'SELECT id_of_user FROM new_user WHERE token = ?',
+        (token,))
+    
+    if data:
+        return data[0][0]
+    return None
