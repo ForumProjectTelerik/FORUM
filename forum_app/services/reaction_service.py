@@ -28,19 +28,21 @@ def create_reply_reaction(id_of_replies, x_token, upvote, downvote):
         if upvote == 1:
             if current_upvote == 1:
                 return "You have already upvoted this reply."
-
-            elif current_downvote == -1:
+            
+            if current_downvote == -1:
                 update_query('''UPDATE reactions_of_replies 
                                 SET UpVote = 1, DownVote = 0
                                 WHERE id_of_replies = ? AND new_user_id = ?''', 
                                 (id_of_replies, user_id))
                 return 'Changed DownVote to UpVote successfully'
-            else:
+            
+            if current_downvote == 0:
                 update_query('''UPDATE reactions_of_replies 
                                 SET UpVote = 1
                                 WHERE id_of_replies = ? AND new_user_id = ?''', 
                                 (id_of_replies, user_id))
                 return 'Upvoted successfully'
+
         elif upvote == -1:
             if current_upvote == 1:
                 update_query('''UPDATE reactions_of_replies 
@@ -48,20 +50,30 @@ def create_reply_reaction(id_of_replies, x_token, upvote, downvote):
                                 WHERE id_of_replies = ? AND new_user_id = ?''', 
                                 (id_of_replies, user_id))
                 return 'Changed UpVote to DownVote successfully'
-            elif current_downvote == -1:
-                return  "You have already downvoted this reply."
-            else:
+
+            if current_upvote == 0:
                 update_query('''UPDATE reactions_of_replies 
                                 SET DownVote = -1
                                 WHERE id_of_replies = ? AND new_user_id = ?''', 
                                 (id_of_replies, user_id))
                 return 'Downvoted successfully'
+            
+            if current_downvote == -1:
+                return  "You have already downvoted this reply."
+
         else:
             return "Invalid vote value. Please use 1 for UpVote or -1 for DownVote."
-        
+
     else:
-        update_query('''INSERT INTO reactions_of_replies (UpVote, DownVote, new_user_id, id_of_replies)
-                        VALUES (?, ?, ?, ?)''', (upvote, downvote, user_id, id_of_replies))
-        return 'Reaction added successfully'
+        if upvote == 1:
+            update_query('''INSERT INTO reactions_of_replies (UpVote, DownVote, new_user_id, id_of_replies)
+                            VALUES (?, ?, ?, ?)''', (1, 0, user_id, id_of_replies))
+            return 'Upvoted successfully'
+        elif upvote == -1:
+            update_query('''INSERT INTO reactions_of_replies (UpVote, DownVote, new_user_id, id_of_replies)
+                            VALUES (?, ?, ?, ?)''', (0, -1, user_id, id_of_replies))
+            return 'Downvoted successfully'
+        else:
+            return "Invalid vote value. Please use 1 for UpVote or -1 for DownVote."
 
 
