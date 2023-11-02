@@ -4,7 +4,7 @@ from services import user_service,message_service
 from authentication.authenticator import get_user_or_raise_401
 from services.user_service import find_username_by_id
 
-messages_router = APIRouter(prefix='/messages', tags=['Everything avalable for Messages'])
+messages_router = APIRouter(prefix='/messages', tags=['Everything available for Messages'])
 
 @messages_router.post('/create_message')
 def send_message_to_user(

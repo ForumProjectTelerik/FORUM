@@ -2,45 +2,13 @@ from fastapi import APIRouter, Header, Query
 from services import user_service
 from authentication.authenticator import get_user_or_raise_401
 from datetime import date
-from my_models.model_user import UserResult
+from my_models.model_user import UserResult,User
 from fastapi.responses import JSONResponse
-users_router = APIRouter(prefix='/user')
 
 
-@users_router.get('/',tags={'All Users'})
-def get_users(x_token: str = Header()):
+users_router = APIRouter(prefix='/user',tags={'Everything available for Users'})
 
-    user = get_user_or_raise_401(x_token)
-    users = user_service.read_users()
-
-    result = []
-
-    for data in users:
-        data_dict = {
-            "id_for_user": data[0],
-            "email": data[1],
-            "nickname": data[2],
-            "password": data[3],
-            "date_of_birth": data[4],
-            "gender": data[5]
-        }
-         
-        result.append(data_dict)
-
-    return result
-
-@users_router.post('/login', description='You can login from here using your username and password.',tags=["Login from here"])
-def login(username: str = Query(),password: str = Query()):
-    user = user_service.try_login(username, password)
-
-    if user:
-        token = user_service.create_token(user)
-        return {'token': token}
-    else:
-        return JSONResponse(status_code=404, content='Invalid login data')
-
-
-@users_router.post('/register', description= 'You can register from here using your email.',tags=["Register from here"])
+@users_router.post('/register', description= 'You can register from here using your email.')
 def register(email: str  = Query(), 
              username: str = Query(), 
              password: str = Query(), 
@@ -53,13 +21,22 @@ def register(email: str  = Query(),
     if user_service.check_username_exist(username):
         return JSONResponse(status_code=400, content=f'This nickname is already taken!')
     else:
-        user = user_service.create_user(email, username, password,date_of_birth,gender)
+        user = user_service.create_user(email, username, password, date_of_birth,gender)
         return user
 
+@users_router.post('/login', description='You can login from here using your username and password.')
+def login(username: str = Query(),password: str = Query()):
+    user = user_service.try_login(username, password)
 
-@users_router.get('/info', tags=["Your specific user information"])
+    if user:
+        token = user_service.create_token(user)
+        return {'token': token}
+    else:
+        return JSONResponse(status_code=404, content='Invalid login data')
+
+@users_router.get('/info',description='Your personal user information.')
 def my_user_information(x_token: str = Header()):
     
     user = get_user_or_raise_401(x_token)
 
-    return UserResult(id=user.id, username=user.nickname)
+    return User(id=user.id,email = user.email,nickname = user.nickname, password = user.password, date_of_birth= user.date_of_birth, gender = user.gender)
