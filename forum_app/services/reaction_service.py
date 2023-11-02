@@ -56,10 +56,7 @@ def create_reply_reaction(id_of_replies, x_token, upvote, downvote):
                                 SET DownVote = -1
                                 WHERE id_of_replies = ? AND new_user_id = ?''', 
                                 (id_of_replies, user_id))
-                return 'Downvoted successfully'
-            
-            if current_downvote == -1:
-                return  "You have already downvoted this reply."
+                return "You have already downvoted this reply."
 
         else:
             return "Invalid vote value. Please use 1 for UpVote or -1 for DownVote."
