@@ -40,7 +40,25 @@ def add_reply(topic_title: str, reply_text:str, x_token: str = Header()):
     return reply_services.create_reply(topic_title, reply_text, username)
 
 
+@replies_router.get('/best_reply/{title}',
+                    description='"You can see which is the best reply according to the author of the topic."')
+def view_best_reply(topic_title: str, x_token: str = Header()):
+    get_user_or_raise_401(x_token)
 
+    if not topic_service.topic_exists(topic_title):
+        return JSONResponse(status_code=404, content=f'No topic with name "{topic_title}"')
 
+    topic_id  = topic_service.find_topic_id_by_name(topic_title)
+    best_reply = reply_services.get_best_reply_id(topic_id)
+    best_reply_id = best_reply[0][0]
 
+    if best_reply_id is None:
+        return {"Topic author has not selected a best reply yet."}
 
+    else:
+        best_reply_text_and_author = reply_services.get_reply_text_by_id(best_reply_id)
+        reply_text = best_reply_text_and_author[0][0]
+        reply_author_id = best_reply_text_and_author[0][1]
+        author_name = user_service.find_user_by_id(reply_author_id)
+
+        return {f'The best reply according to the topic author: {reply_text}, by: {author_name}'}

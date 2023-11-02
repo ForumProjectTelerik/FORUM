@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Header, Response, Query
+from fastapi import APIRouter, Header, Response, Query, Path
 from authentication.authenticator import get_user_or_raise_401
-from services import topic_service, user_service
+from services import topic_service, user_service, reply_services
 from my_models.model_topic import TopicResult
 from my_models.model_topic import Topic
 from fastapi.responses import JSONResponse
@@ -22,13 +22,15 @@ def view_all_topics(search: str = Query(None),sort: str = Query(default='Ascendi
     result = []
 
     for data in topics:
+        best_reply = reply_services.best_reply_text(data[6])
         data_dict = {
             "id_of_topic": data[0],
             "title": data[1],
             "topic_text": data[2],
             "date_of_creation": data[3],
             "category_name": data[4],
-            "id_of_author": data[5]
+            "id_of_author": data[5],
+            "best_reply": best_reply
         }
          
         result.append(data_dict)
@@ -55,7 +57,7 @@ def add_topic(x_token: str = Header(),
 def view_topic_with_replies(id: int = Query()):
 
     topic_with_reply = topic_service.view_topic_with_reply(id)
-
+    best_reply = reply_services.best_reply_text(topic_with_reply[0][6])
     if not topic_with_reply:
         return JSONResponse(status_code=404,content=f'There is no such topic with this ID: {id}')
 
@@ -71,9 +73,32 @@ def view_topic_with_replies(id: int = Query()):
             "date_of_creation": data[3],
             "category_name": data[4],
             "author_of_topic": username,
+            "best_reply": best_reply,
             "replies": reply
         }
 
         result.append(data_dict)
 
     return result
+
+
+
+@topics_router.put('/add_best_reply')
+def add_best_reply_to_topic(
+    topic_title: str,
+    x_token: str = Header(..., description="User's authentication token"),
+    best_reply_id: int = Query(..., description="ID of the best replay according to the author.")):
+
+    get_user_or_raise_401(x_token)
+    if not topic_service.topic_exists(topic_title):
+        return {f'No topic wit name: {topic_title}.'}
+
+    username = user_service.get_username_by_token(x_token)
+    topic_author_name = topic_service.get_topic_author(topic_title)
+    if not username == topic_author_name:
+        return {"Only topic author can choose 'Best reply' for the topic."}
+
+    topic_service.add_reply_id_to_topic(topic_title, best_reply_id)
+    return {f'The author choose the best reply of the topic'}
+
+

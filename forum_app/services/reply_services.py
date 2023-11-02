@@ -27,3 +27,25 @@ def get_downup_vote(reply_id):
     data = read_query('SELECT UpVote,DownVote,new_user_id from reactions_of_replies WHERE id_of_replies = ?',(reply_id,))
     replies = [{'Reaction Nickname': user_service.find_user_by_id(row[2]),'UpVote': row[0], 'DownVote': row[1]} for row in data]
     return replies
+
+
+
+def get_best_reply_id(topic_id: int):
+    best_reply_id = read_query('SELECT best_reply_id FROM new_topic WHERE id_of_topic = ?',
+                      (topic_id,))
+    return best_reply_id
+
+
+
+def get_reply_text_by_id(reply_id: int):
+    reply_text_and_author = read_query('SELECT text, new_user_id FROM replies WHERE id_of_replies = ?',
+                                       (reply_id,))
+    return reply_text_and_author
+
+
+def best_reply_text(reply_id):
+    best_reply = get_reply_text_by_id(reply_id)
+    if not best_reply:
+        best_reply = [("Topic author has not selected a best reply yet.",)]
+
+    return best_reply[0][0]

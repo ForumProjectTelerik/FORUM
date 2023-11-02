@@ -109,3 +109,10 @@ def find_id_by_token(token: str) -> int | None:
     if data:
         return data[0][0]
     return None
+
+
+
+def get_username_by_user_id(user_id: int):
+    username = read_query('SELECT nickname FROM new_user WHERE id_of_user = ?',
+                          (user_id,))
+    return username[0][0]
