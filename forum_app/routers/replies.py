@@ -8,8 +8,7 @@ replies_router = APIRouter(prefix='/replies', tags=['Everything available for Re
 
 
 @replies_router.get('/{title}',description='You can view every reply using a specific topic title.')
-def view_replies_by_topic_title(topic_title: str, x_token: str = Header()):
-    get_user_or_raise_401(x_token)
+def view_replies_by_topic_title(topic_title: str):
     if not topic_service.topic_exists(topic_title):
         return JSONResponse(status_code=404, content=f'No topic with name "{topic_title}"')
 

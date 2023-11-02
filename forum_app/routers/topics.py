@@ -10,9 +10,8 @@ topics_router = APIRouter(prefix='/topic',tags={'Everything available for Topics
 
 
 @topics_router.get('/',description='You can search/sort every topic from here.')
-def get_topics(search: str = Query(None),sort: str = Query(default='Ascending',description='You can choose how to sort the title: ascending or descending'),x_token: str = Header()):
+def view_all_topics(search: str = Query(None),sort: str = Query(default='Ascending',description='You can choose how to sort the title: ascending or descending')):
 
-    user = get_user_or_raise_401(x_token)
     if search:
         topics = topic_service.search_by_topic(search)
     elif sort:
@@ -51,3 +50,30 @@ def add_topic(x_token: str = Header(),
     else:
         everything = topic_service.create_topic(title,topic_text,date_of_creation,name_of_category,username)
         return everything
+
+@topics_router.get('/view_topic')
+def view_topic_with_replies(id: int = Query()):
+
+    topic_with_reply = topic_service.view_topic_with_reply(id)
+
+    if not topic_with_reply:
+        return JSONResponse(status_code=404,content=f'There is no such topic with this ID: {id}')
+
+    result = []
+
+    for data in topic_with_reply:
+        username = user_service.find_user_by_id(data[5])
+        reply = topic_service.view_reply_by_topic(data[0])
+        data_dict = {
+            "id_of_topic": data[0],
+            "title": data[1],
+            "topic_text": data[2],
+            "date_of_creation": data[3],
+            "category_name": data[4],
+            "author_of_topic": username,
+            "replies": reply
+        }
+
+        result.append(data_dict)
+
+    return result

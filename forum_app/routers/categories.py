@@ -11,9 +11,8 @@ categories_router = APIRouter(prefix='/categories',tags={'Everything available f
 
 
 @categories_router.get('/',description='You can view all created categories')
-def view_all_categories(search: str = Query(None),sort: str = Query(default='Ascending',description='You can choose how to sort the categories: (Ascending or Descending)'),x_token: str = Header()):
+def view_all_categories(search: str = Query(None),sort: str = Query(default='Ascending',description='You can choose how to sort the categories: (Ascending or Descending)')):
 
-    _ = get_user_or_raise_401(x_token)
     if search:
         topics = category_service.search_by_categories(search)
     elif sort:
@@ -35,8 +34,7 @@ def create_a_category(category: str = Query(),x_token: str = Header()):
     return {"Category has been created"}
 
 @categories_router.get('/view_topics',description= 'You can get all topics from one category')
-def get_all_topics_for_one_category(category_name: str,x_token: str = Header()):
-    _ = get_user_or_raise_401(x_token)
+def get_all_topics_for_one_category(category_name: str):
     if not category_service.category_exists(category_name):
         return JSONResponse(status_code=404, detail=f'Category with name "{category_name}" not found.')
     else:

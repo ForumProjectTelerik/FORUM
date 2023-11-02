@@ -11,7 +11,7 @@ reactions_router = APIRouter(prefix='/reactions',tags={'Everything available for
 #     reactions = reaction_service.read_reactions_for_reply(id_of_replies, user_id)
 #     return reactions
 
-@reactions_router.put('/replies/{id_of_replies}/react', description='Add a reaction to a reply')
+@reactions_router.put('/replies', description='Add a reaction to a reply')
 async def add_reaction_to_reply(
     id_of_replies: int = Path(..., description="ID of the reply to react to"),
     x_token: str = Header(..., description="User's authentication token"),

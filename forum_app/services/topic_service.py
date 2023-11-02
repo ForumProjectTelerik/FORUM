@@ -4,7 +4,7 @@ from datetime import datetime,date
 from services.user_service import find_by_username
 from services.category_service import category_exists
 from fastapi import Response
-
+from services import user_service
 
 def read_topic():
     data = read_query('SELECT * FROM new_topic')
@@ -64,4 +64,23 @@ def find_topic_id_by_name(topic_name: str):
                         WHERE title = ?''', (topic_name,))
     return result_tuple[0][0]
 
+def view_topic_with_reply(id: int):
+    something = read_query('SELECT * FROM new_topic WHERE id_of_topic = ?',(id,))
+    return something
 
+def select_upvote_downvote(id: int):
+    something = read_query('SELECT UpVote,DownVote from reactions_of_replies where new_user_id = ?',(id,))
+    return something
+
+def upvote_count(reply_id: int):
+    something = read_query('SELECT UpVote from reactions_of_replies WHERE id_of_replies = ? AND UpVote = 1',(reply_id,))
+    return len(something)
+
+def downvote_count(reply_id: int):
+    something = read_query('SELECT DownVote from reactions_of_replies WHERE id_of_replies = ? AND DownVote = -1',(reply_id,))
+    return len(something)
+
+def view_reply_by_topic(id: int):
+    nothing = read_query('SELECT * FROM replies WHERE new_topic_id = ?',(id,))
+    replies = [{'Id_of_Reply': row[0], 'Text_Reply': row[1],'Reply Creator': user_service.find_user_by_id(row[3]),'Reactions':f' UpVote {upvote_count(row[0])} / DownVote {downvote_count(row[0])}'} for row in nothing]
+    return replies
