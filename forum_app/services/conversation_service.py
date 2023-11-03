@@ -16,9 +16,9 @@ def messaged_users(sender_id):
     
 def conversation_by_id(conversation: int):
 
-    get_conversation = read_query('SELECT text_message FROM messages WHERE conversation_id = ?',(conversation,))
-
-    return get_conversation
+    get_conversation = read_query('SELECT text_message,the_sender FROM messages WHERE conversation_id = ?',(conversation,))
+    conversation = [{f'{user_service.find_nickname_by_new_id(row[1])}': {row[0]}} for row in get_conversation]
+    return conversation
 
 def between_two_users(the_sender: int, the_receiver: int):
 

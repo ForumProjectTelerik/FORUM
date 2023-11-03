@@ -11,9 +11,9 @@ users_router = APIRouter(prefix='/user',tags={'Everything available for Users'})
 @users_router.post('/register', description= 'You can register from here using your email.')
 def register(email: str  = Query(), 
              username: str = Query(), 
-             password: str = Query(), 
-             date_of_birth: date = Query(), 
-             gender: str = Query()):
+             password: str = Query(description='The password has to be longer than 5 characters!'), 
+             date_of_birth: date = Query(description='Please state your date of birth using the (-) symbol',default='1998-11-11'), 
+             gender: str = Query(description='Choose a gender male/female/non-binary')):
 
     if user_service.check_email_exist(email):
         return JSONResponse(status_code=400, content=f'This email is already taken!')

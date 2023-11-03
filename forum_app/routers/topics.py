@@ -57,7 +57,6 @@ def add_topic(x_token: str = Header(),
 def view_topic_with_replies(id: int = Query()):
 
     topic_with_reply = topic_service.view_topic_with_reply(id)
-    best_reply = reply_services.best_reply_text(topic_with_reply[0][6])
     if not topic_with_reply:
         return JSONResponse(status_code=404,content=f'There is no such topic with this ID: {id}')
 
@@ -65,6 +64,7 @@ def view_topic_with_replies(id: int = Query()):
 
     for data in topic_with_reply:
         username = user_service.find_user_by_id(data[5])
+        best_reply = reply_services.best_reply_text(topic_with_reply[0][6])
         reply = topic_service.view_reply_by_topic(data[0])
         data_dict = {
             "id_of_topic": data[0],

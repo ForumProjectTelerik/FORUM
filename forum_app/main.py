@@ -7,7 +7,7 @@ from routers.replies import replies_router
 from routers.reactions import reactions_router
 from routers.conversations import conversations_router
 
-app = FastAPI(title='The Sport Forum', description='Team #5 web project on Telerik Academy')
+app = FastAPI(title='SportSpirit FORUM', description='Ignite Your Passion for Sports')
 app.include_router(users_router)
 app.include_router(messages_router)
 app.include_router(categories_router)

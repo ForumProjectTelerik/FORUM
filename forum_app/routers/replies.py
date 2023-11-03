@@ -41,7 +41,7 @@ def add_reply(topic_title: str, reply_text:str, x_token: str = Header()):
 
 
 @replies_router.get('/best_reply/{title}',
-                    description='"You can see which is the best reply according to the author of the topic."')
+                    description='You can see which is the best reply according to the author of the topic.')
 def view_best_reply(topic_title: str, x_token: str = Header()):
     get_user_or_raise_401(x_token)
 

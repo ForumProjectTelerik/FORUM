@@ -1,8 +1,8 @@
 from datetime import date
-from pydantic import BaseModel, constr
+from pydantic import BaseModel
 
 class Topic(BaseModel):
-    title: constr(min_length = 3)
+    title: str
     topic_text: str
     date_of_creation: date
     name_of_category: str

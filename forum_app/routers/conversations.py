@@ -29,6 +29,4 @@ def view_conversation_between_two_users(x_token: str = Header(),the_receiver_use
         return JSONResponse(status_code=404,content='Not a valid receiver')
     messages =  conversation_service.between_two_users(the_sender,the_receiver)
 
-    good_format_on_messages = ["Message: " + message[0] for message in messages]
-
-    return good_format_on_messages
+    return messages

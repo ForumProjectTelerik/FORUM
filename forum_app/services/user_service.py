@@ -73,7 +73,7 @@ def create_user(email: str, nickname: str, password: str, dateOfBirth, gender: s
             'INSERT INTO new_user(email, nickname, password, date_of_birth, gender) VALUES (?,?,?,?,?)',
             (email, nickname, password, dateOfBirth, gender))
 
-        return User(id=generated_id, email=email,nickname=nickname, password='', date=dateOfBirth, gender=gender)
+        return User(id=generated_id, email=email,nickname=nickname, password=password, date=dateOfBirth, gender=gender)
 
 def find_user_by_token(token: str):
 
@@ -116,3 +116,9 @@ def get_username_by_user_id(user_id: int):
     username = read_query('SELECT nickname FROM new_user WHERE id_of_user = ?',
                           (user_id,))
     return username[0][0]
+
+def find_nickname_by_new_id(id: int) -> User | None:
+    data = read_query(
+        'SELECT nickname FROM new_user WHERE id_of_user = ?',
+        (id,))
+    return data[0][0]
