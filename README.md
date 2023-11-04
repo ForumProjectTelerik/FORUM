@@ -1,4 +1,4 @@
-<img align="right" src="https://cdn.discordapp.com/attachments/700253153915830291/1169913714556796980/image.png?ex=6557220d&is=6544ad0d&hm=23ee2ddc6e24fce698b0f0d7267139921b727f0ffb4c817f62e07500d45daedb&" alt="logo" width="160px"/>
+<img align="right" src="https://cdn.discordapp.com/attachments/700253153915830291/1169913714556796980/image.png?ex=6557220d&is=6544ad0d&hm=23ee2ddc6e24fce698b0f0d7267139921b727f0ffb4c817f62e07500d45daedb&" alt="logo" width="200px"/>
 
 # SPORTSPIRIT BACK-END FORUM
 
@@ -6,13 +6,13 @@
 Hello and welcome to our `back-end forum guidance handbook`.
 Here you will understand how to properly work with the program we created. 
 
-<br></br>
+
 
 **⚠ Please strictly follow the instructions we provided ⚠**
 
 **⚠ For your best convenience you could use the swagger UI provided by FASTAPI ⚠**
 
-<br></br>
+
 
 ## SEQUENCE SECTIONS IN OUR PROGRAM:
 
@@ -69,7 +69,7 @@ Here you will understand how to properly work with the program we created.
 *📞YOU CAN SEE EVERY SINGLE EXCHANGED MESSAGE IN THE VIEW CONVERSATIONS SECTION📞*
 
 
-<img align="right" src="https://cdn.discordapp.com/attachments/700253153915830291/1169913714556796980/image.png?ex=6557220d&is=6544ad0d&hm=23ee2ddc6e24fce698b0f0d7267139921b727f0ffb4c817f62e07500d45daedb&" alt="logo" width="160px"/>
+<img align="right" src="https://cdn.discordapp.com/attachments/700253153915830291/1169913714556796980/image.png?ex=6557220d&is=6544ad0d&hm=23ee2ddc6e24fce698b0f0d7267139921b727f0ffb4c817f62e07500d45daedb&" alt="logo" width="200px"/>
 
 # ADDITIONAL INFORMATION:
 
