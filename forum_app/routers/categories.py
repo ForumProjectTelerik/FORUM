@@ -33,7 +33,7 @@ def create_a_category(category: str = Query(),x_token: str = Header()):
     new_category = category_service.create_category(category)
     return {"Category has been created"}
 
-@categories_router.get('/view_topics',description= 'You can get all topics from one category')
+@categories_router.get('/{category_name}/topics',description= 'You can get all topics from one category')
 def get_all_topics_for_one_category(category_name: str):
     if not category_service.category_exists(category_name):
         return JSONResponse(status_code=404, detail=f'Category with name "{category_name}" not found.')

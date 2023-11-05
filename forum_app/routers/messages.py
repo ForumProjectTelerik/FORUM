@@ -6,7 +6,7 @@ from services.user_service import find_username_by_id
 
 messages_router = APIRouter(prefix='/messages', tags=['Everything available for Messages'])
 
-@messages_router.post('/create_message')
+@messages_router.post('/')
 def send_message_to_user(
     message_text: str = Query(),
     receiver_username: str = Query(),

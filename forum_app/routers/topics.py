@@ -6,7 +6,7 @@ from my_models.model_topic import Topic
 from fastapi.responses import JSONResponse
 
 
-topics_router = APIRouter(prefix='/topic',tags={'Everything available for Topics'})
+topics_router = APIRouter(prefix='/topics',tags={'Everything available for Topics'})
 
 
 @topics_router.get('/',description='You can search/sort every topic from here.')
@@ -37,7 +37,7 @@ def view_all_topics(search: str = Query(None),sort: str = Query(default='Ascendi
 
     return result
 
-@topics_router.post('/add_topic',description='You can create new topic using available categories from here.')
+@topics_router.post('/',description='You can create new topic using available categories from here.')
 def add_topic(x_token: str = Header(),
         title: str = Query(),
         topic_text: str = Query(),
@@ -53,8 +53,8 @@ def add_topic(x_token: str = Header(),
         everything = topic_service.create_topic(title,topic_text,date_of_creation,name_of_category,username)
         return everything
 
-@topics_router.get('/view_topic')
-def view_topic_with_replies(id: int = Query()):
+@topics_router.get('/{id}')
+def view_topic_with_replies(id: int):
 
     topic_with_reply = topic_service.view_topic_with_reply(id)
     if not topic_with_reply:
@@ -83,7 +83,7 @@ def view_topic_with_replies(id: int = Query()):
 
 
 
-@topics_router.put('/add_best_reply')
+@topics_router.put('/{topic_title}/best_reply')
 def add_best_reply_to_topic(
     topic_title: str,
     x_token: str = Header(..., description="User's authentication token"),

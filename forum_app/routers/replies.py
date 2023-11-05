@@ -30,7 +30,7 @@ def view_replies_by_topic_title(topic_title: str):
 
 
 
-@replies_router.post('/add_reply',description='You can add a new reply under a created topic.')
+@replies_router.post('/',description='You can add a new reply under a created topic.')
 def add_reply(topic_title: str, reply_text:str, x_token: str = Header()):
     get_user_or_raise_401(x_token)
     username = user_service.get_username_by_token(x_token)

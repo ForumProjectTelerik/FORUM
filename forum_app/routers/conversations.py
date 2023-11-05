@@ -6,7 +6,7 @@ from services.user_service import find_username_by_id
 
 conversations_router = APIRouter(prefix='/conversations', tags=['Everything available for Conversations'])
 
-@conversations_router.get('/between_all_users',description='From here you can get all users which you messaged or messaged you.')
+@conversations_router.get('/nicknames',description='From here you can get all users which you messaged or messaged you.')
 def view_all_messaged_users(x_token: str = Header()):
     user = get_user_or_raise_401(x_token)
 
@@ -18,7 +18,7 @@ def view_all_messaged_users(x_token: str = Header()):
     else:
         return conversation_service.messaged_users(get_user)
     
-@conversations_router.get('/between_two_users',description='From here you can get all of your exchanged messages between different users.')
+@conversations_router.get('/',description='From here you can get all of your exchanged messages between different users.')
 def view_conversation_between_two_users(x_token: str = Header(),the_receiver_username: str = Query()):
     user = get_user_or_raise_401(x_token)
 
