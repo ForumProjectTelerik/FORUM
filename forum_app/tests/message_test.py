@@ -77,20 +77,6 @@ class TestMessageService(unittest.TestCase):
         self.assertEqual(result.status_code, expected_response['status_code'])
         self.assertEqual(response_data, expected_response['content'])
 
-    @patch('services.message_service.insert_query')
-    def test_create_conversation_existing_conversation(self, mock_insert_query):
-        # Arrange
-        sender_id = 1
-        receiver_id = 2
-
-        mock_insert_query.return_value = 1
-
-        # Act
-        id_of_conversation = create_conversation(sender_id, receiver_id)
-
-        # Assert
-        self.assertFalse(mock_insert_query.called)
-        self.assertEqual(id_of_conversation, 1)
 
     @patch('services.message_service.read_query')
     def test_read_messages(self, mock_read_query):

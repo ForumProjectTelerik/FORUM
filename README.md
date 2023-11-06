@@ -19,10 +19,10 @@ Here you will understand how to properly work with the program we created.
 <!-- Register/Login -->
 
 ### 🟥 Register/Login ✅ 
-> This section allows you to successfuly register using your own email/username/password.
+> This section allows you to successfully register using your own email/username/password.
 > After registration you will be able to login.
 
->Uppon logging in our system you will get a specific token from which you can access every section in our website
+>Upon logging in our system you will get a specific token from which you can access every section in our website
 
 *🔴❗WARNING DON'T SHARE YOUR TOKEN TO ANYONE ❗🔴*
 
@@ -102,6 +102,12 @@ Here you will understand how to properly work with the program we created.
 >You can see every single person you messaged.
 
 >You can see an existing conversation, by inserting your token and the receivers username.
+
+## DATABASE SCHEME:
+
+<img align="" src="https://cdn.discordapp.com/attachments/700253153915830291/1170980086271463484/image.png?ex=655b0330&is=65488e30&hm=423fe314827a113666a5d00211d60c7db46c4ae14b89f371d20421db1bebaf79&" alt="logo" width="700px"/>
+
+
 
 ### [Click to return to the top](#sequence-sections-in-our-program)
 ------------------------------------------------------------------------------
